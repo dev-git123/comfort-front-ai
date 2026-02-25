@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import ChatMessage from "./ChatMessage";
 
 function ChatBox() {
@@ -15,16 +14,17 @@ function ChatBox() {
     setInput("");
 
     try {
+    console.log("call here..")
       // Call free LLM API (Hugging Face example)
-      const res = await axios.post(
-        "https://api-inference.huggingface.co/models/gpt2",
-        { inputs: input },
-        {
-          headers: { Authorization: "Bearer YOUR_HUGGINGFACE_TOKEN" },
-        }
-      );
+    const res = await fetch("http://127.0.0.1:8000/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: "I'm stressed today" }),
+    });
+    const data = await res.json();
+    console.log(data.reply);
 
-      const botReply = res.data[0]?.generated_text || "Sorry, I can't respond right now.";
+      const botReply = data.reply?.generated_text || "Sorry, I can't respond right now.";
 
       setMessages([...newMessages, { sender: "bot", message: botReply }]);
     } catch (err) {
