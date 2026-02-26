@@ -14,17 +14,18 @@ function ChatBox() {
     setInput("");
 
     try {
-    console.log("call here..")
+    console.log("call here..", input)
       // Call free LLM API (Hugging Face example)
     const res = await fetch("http://127.0.0.1:8000/chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message: "I'm stressed today" }),
+    body: JSON.stringify({ message: input }),
     });
     const data = await res.json();
+    console.log("data...", data)
     console.log(data.reply);
 
-      const botReply = data.reply?.generated_text || "Sorry, I can't respond right now.";
+      const botReply = data.reply || "Sorry, I can't respond right now.";
 
       setMessages([...newMessages, { sender: "bot", message: botReply }]);
     } catch (err) {

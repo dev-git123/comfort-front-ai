@@ -4,14 +4,12 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import os
 from fastapi.middleware.cors import CORSMiddleware
 
-
-# Set your HF token
-os.environ["HF_TOKEN"] = "YOUR HF TOKEN"
+os.environ["HF_TOKEN"] = "your HF token"
 app = FastAPI()
 
 # Allow cross-origin requests
 origins = [
-    "http://localhost:5173",  # your React frontend
+    "http://localhost:5173",  # React frontend
     "http://127.0.0.1:5173"
 ]
 
@@ -31,12 +29,11 @@ class ChatRequest(BaseModel):
 
 @app.post("/chat")
 def chat(req: ChatRequest):
-    print("call here.")
     inputs = tokenizer(req.message, return_tensors="pt")
     outputs = model.generate(**inputs, max_new_tokens=100)
     reply = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    print("reply is..", reply)
     return {"reply": reply}
+
 
 if __name__ == "__main__":
     import uvicorn
