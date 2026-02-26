@@ -13,6 +13,7 @@ function ChatMessage({ message, sender }: Props) {
     >
       <span
         style={{
+          whiteSpace: "pre-wrap",
           display: "inline-block",
           padding: "8px 12px",
           borderRadius: "12px",
